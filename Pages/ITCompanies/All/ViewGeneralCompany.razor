@@ -1,0 +1,70 @@
+﻿@page "/ViewCompany/{Id:guid}"
+@using Project.Omega.Data.ITCompanies
+@using Project.Omega.Services.ITCompanies
+@inject CompanyGeneralService _generalService
+@inject CompaniesSpecificService _specificService
+@inject NavigationManager _navigationManager
+
+<MudPaper Class="pa-8 ma-5 mt-2" Elevation="3">
+    <MudText Class="mb-2"><h1><strong>@GenCompany.CompanyName</strong></h1></MudText>
+        <MudText><MudIcon Icon="@Icons.Material.Filled.CardMembership" Size="Size.Small" /> Registered as  @GenCompany.Id</MudText>
+        <MudText><MudIcon Icon="@Icons.Material.Filled.MiscellaneousServices" Size="Size.Small" /> Provides @GenCompany.CompanyType Service</MudText>
+        <MudText><MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" /> Founded in @GenDate</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.TravelExplore" Size="Size.Small" /> Serves to @GenCompany.AreaOfService Market</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.Money" Size="Size.Small" /> Worths @GenCompany.Revenue.ToString("C")</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.People" Size="Size.Small" /> Employed @GenCompany.NumberOfEmployees.ToString("N0") employee(s)</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.Web" Size="Size.Small" /> Learn more by visiting <a href="@GenCompany.WebsiteLink">@GenCompany.WebsiteLink</a></MudText>
+        @if(GenCompany.PreviouslyWorkedOrNot == true)
+                    {
+                    <MudText><MudIcon Icon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small" /> Previously collaborated</MudText>
+                    }
+                    else
+                    {
+                    <MudText><MudIcon Icon="@Icons.Filled.Error" Color="Color.Error" Size="Size.Small" /> No prior collaboration</MudText>
+                    }
+         @if(GenCompany.BlacklistedOrNot == false)
+    {
+        <MudText><MudIcon Icon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small" /> Not in the blacklist</MudText>
+    }
+    else
+    {
+        <MudText><MudIcon Icon="@Icons.Filled.Error" Color="Color.Error" Size="Size.Small" /> In the blacklist</MudText>
+    }
+    @if(GenCompany.IsSelected == false)
+    {
+        <MudButton Class="mt-4 mr-4" OnClick="SelectAddCompany" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Star" Color="Color.Success">SELECT FOR FURTHER PROCESSING</MudButton>
+    }
+    else
+    {
+        <MudButton Class="mt-4 mr-4" OnClick="UnSelectCompany" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.RemoveCircle" Color="Color.Dark">UNSELECT COMPANY</MudButton>
+    }
+    <MudButton Class="mt-4 mr-4" Href="@($"/EditGeneralCompany/{GenCompany.Id}")" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Warning">EDIT COMPANY</MudButton>
+    <MudButton Class="mt-4 mr-4" Href="@($"/DeleteGeneralCompany/{GenCompany.Id}")" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">DELETE COMPANY</MudButton>
+    <MudButton Class="mt-4 mr-4" Href="/AllCompanies" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowCircleRight" Color="Color.Default">BACK TO TABLE</MudButton>
+</MudPaper>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    General GenCompany = new General();
+    Specific SpecificCompany = new Specific();
+    String GenDate = new String("");
+    protected override async Task OnInitializedAsync()
+    {
+        GenCompany = await Task.Run(() => _generalService.GetGeneralCompanyByIDAsync(Id));
+        SpecificCompany = await Task.Run(() => _specificService.GetSpecificCompanyByIDAsync(Id));
+        GenDate = GenCompany.FoundationDate.ToString().Substring(0,GenCompany.FoundationDate.ToString().IndexOf(" "));
+    }
+    protected async void SelectAddCompany()
+    {
+        GenCompany.IsSelected = true;
+        await _generalService.SelectAndTransferCompany(GenCompany);
+        _navigationManager.NavigateTo("/ViewCompany/"+GenCompany.Id);
+    }
+    protected async void UnSelectCompany()
+    {
+        GenCompany.IsSelected = false;
+        await _specificService.DeleteSpecificCompanyAsync(SpecificCompany);
+        _navigationManager.NavigateTo("/ViewCompany/"+GenCompany.Id);
+    }
+ }

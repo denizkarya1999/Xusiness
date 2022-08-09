@@ -1,0 +1,91 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Web.Extensions.Head
+
+<Title Value="Xussiness Pro: Home" />
+    <MudPaper Class="pa-8 ma-5 mt-2"  Elevation="3">
+            <MudStack Class="align-center mb-2" Spacing="6">
+    <MudText Typo="Typo.h3">Confused about your clients?<b> No Problem!</b></MudText>
+     <MudImage Src="Photos/DenizBussiness.jpg" Height="350" Class="rounded-lg mx-auto my-auto"/>
+  <MudText Typo="Typo.h3"><b>Xussiness&trade;</b> is here.</MudText>
+ <MudText>We are here to help businesses to cooperate with any company they want through a database system.
+      Xussiness lets all registered businesses to add all potential companies into a common database, then lets them add the company they like into their private database.
+      Interested? Then follow our instructions to use Xussiness effectively and make your business perfect!</MudText>
+      </MudStack>
+      <MudStack Class="mt-4 mb-2" >
+          <MudText Typo="Typo.h5"><b>Common Database</b></MudText>
+      <MudExpansionPanels>
+        <MudExpansionPanel Text="Add company to common database">
+           <MudStack Justify="Justify.Center" Class="align-center mt-4">
+                 <MudText Typo="Typo.body2">Click '+' sign in All Companies page</MudText>
+               <MudImage Src="Screenshots/DisplayAllCompanies.jpg" Width="1000" Height="500" Alt="Click '+' sign in All Companies page" Elevation="25" Class="ma-4"/>
+            <MudText Typo="Typo.body2">Add information regarding to company</MudText>
+               <MudImage Src="Screenshots/AddCompany.jpg" Width="1000" Height="500" Alt="Add information regarding to company" Elevation="25" Class="ma-4"/>    
+             </MudStack>
+        </MudExpansionPanel>
+        <MudExpansionPanel Text="Select companies from common database">
+           <MudStack Justify="Justify.Center" Class="align-center mt-4">
+               <MudText Typo="Typo.body2">Click 'View' icon</MudText>
+                 <MudImage Src="Screenshots/DisplayAllCompanies.jpg" Width="1000" Height="500" Alt="Click 'View' icon" Elevation="25" Class="ma-4"/>
+            <MudText Typo="Typo.body2">Click 'Select for further processing' button. Same applies for unselecting company</MudText>
+                 <MudImage Src="Screenshots/ViewGeneralCompany.jpg" Width="1000" Height="500" Alt="Click 'Select for further processing' button. Same applies for unselecting company" Elevation="25" Class="ma-4"/>
+             </MudStack>
+        </MudExpansionPanel>
+        <MudExpansionPanel Text="View each company from common database">
+           <MudStack Justify="Justify.Center" Class="align-center mt-4">
+               <MudText Typo="Typo.body2">Click 'View' icon</MudText>
+                 <MudImage Src="Screenshots/DisplayAllCompanies.jpg" Width="1000" Height="500" Alt="Click 'View' icon" Elevation="25" Class="ma-4"/>
+            <MudText Typo="Typo.body2">View the selected company</MudText>
+                 <MudImage Src="Screenshots/ViewGeneralCompany.jpg" Width="1000" Height="500" Alt="View the selected company" Elevation="25" Class="ma-4"/>
+             </MudStack>
+        </MudExpansionPanel>
+        <MudExpansionPanel Text="Edit company from common database">
+           <MudStack Justify="Justify.Center" Class="align-center mt-4">
+               <MudText Typo="Typo.body2">Click 'View' icon</MudText>
+                 <MudImage Src="Screenshots/DisplayAllCompanies.jpg" Width="1000" Height="500" Alt="Click 'View' icon" Elevation="25" Class="ma-4"/>
+             <MudText Typo="Typo.body2">Click 'Edit' to open edit page</MudText>
+                 <MudImage Src="Screenshots/ViewGeneralCompany.jpg" Width="1000" Height="500" Alt="Click 'Edit' to open edit page" Elevation="25" Class="ma-4"/>
+                 <MudText Typo="Typo.body2">Click edit and update the company</MudText>
+                 <MudImage Src="Screenshots/EditCompany.jpg" Width="1000" Height="500" Alt="Click edit and update the company" Elevation="25" Class="ma-4"/>    
+             </MudStack>
+        </MudExpansionPanel>
+        <MudExpansionPanel Text="Delete company from common database">
+           <MudStack Justify="Justify.Center" Class="align-center mt-4">
+               <MudText Typo="Typo.body2">Click 'Delete Company' button</MudText>
+                 <MudImage Src="Screenshots/DisplayAllCompanies.jpg" Width="1000" Height="500" Alt="Click 'Delete Company' button" Elevation="25" Class="ma-4"/>
+             <MudText Typo="Typo.body2">Click 'Delete' to open delete page</MudText>
+                 <MudImage Src="Screenshots/ViewGeneralCompany.jpg" Width="1000" Height="500" Alt="Click 'Delete' to open delete page" Elevation="25" Class="ma-4"/>
+                 <MudText Typo="Typo.body2">Click 'Delete' and delete the company</MudText>
+                 <MudImage Src="Screenshots/DeleteGeneralCompany.jpg" Width="1000" Height="500" Alt="Click 'Delete' and delete the company" Elevation="25" Class="ma-4"/>    
+             </MudStack>
+        </MudExpansionPanel>
+        </MudExpansionPanels>
+        </MudStack>
+        <MudStack Class="mt-8 mb-2">
+            <MudText Typo="Typo.h5"><b>Private Database</b></MudText>
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="View each company from your private database">
+           <MudStack Justify="Justify.Center" Class="align-center mt-4">
+               <MudText Typo="Typo.body2">Click 'View' icon</MudText>
+                 <MudImage Src="Screenshots/DisplaySelectedCompanies.jpg" Width="1000" Height="500" Alt="Click 'View' icon" Elevation="25" Class="ma-4"/>
+            <MudText Typo="Typo.body2">View the selected company</MudText>
+                 <MudImage Src="Screenshots/ViewSelectedCompany.jpg" Width="1000" Height="500" Alt="View the selected company" Elevation="25" Class="ma-4"/>
+             </MudStack>
+        </MudExpansionPanel>
+        <MudExpansionPanel Text="Delete company from your private database">
+           <MudStack Justify="Justify.Center" Class="align-center mt-4">
+               <MudText Typo="Typo.body2">Click 'Delete Company' button</MudText>
+                 <MudImage Src="Screenshots/DisplaySelectedCompanies.jpg" Width="1000" Height="500" Alt="Click 'Delete Company' button" Elevation="25" Class="ma-4"/>
+             <MudText Typo="Typo.body2">Click 'Delete' to open delete page</MudText>
+                 <MudImage Src="Screenshots/ViewSelectedCompany.jpg" Width="1000" Height="500" Alt="Click 'Delete' to open delete page" Elevation="25" Class="ma-4"/>
+             <MudText Typo="Typo.body2">Click 'Delete' and delete the company</MudText>
+             <MudImage Src="Screenshots/DeleteSelectedCompany.jpg" Width="1000" Height="500" Alt="Click 'Delete' and delete the company" Elevation="25" Class="ma-4"/>
+         </MudStack>
+        </MudExpansionPanel>
+                </MudExpansionPanels>
+        </MudStack>
+         <MudStack Class="align-center mt-4">
+             <MudText Typo="Typo.subtitle2">2022 &copy; Deniz K Acikbas. All rights are reserved.</MudText>
+             </MudStack>
+  </MudPaper>
+@code {
+}

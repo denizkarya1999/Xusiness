@@ -1,0 +1,65 @@
+﻿@page "/DeleteGeneralCompany/{Id:guid}"
+@using Project.Omega.Data.ITCompanies
+@using Project.Omega.Services.ITCompanies
+@inject CompaniesSpecificService _specificService
+@inject CompanyGeneralService _generalService
+@inject NavigationManager _navigationManager
+@inject ISnackbar Snackbar
+
+<MudPaper Class="pa-8 ma-5 mt-2" Elevation="3">
+        <MudText Class="mb-2"><h1><strong>Delete </strong>@GenCompany.CompanyName</h1></MudText>
+        <MudText Class="mb-2">Are you sure want to delete this company?</MudText>
+        <MudCard Elevation="2" Class="mt-4 pa-4">
+            <MudText><MudIcon Icon="@Icons.Material.Filled.CardMembership" Size="Size.Small" /> Registered as  @GenCompany.Id</MudText>
+        <MudText><MudIcon Icon="@Icons.Material.Filled.MiscellaneousServices" Size="Size.Small" /> Provides @GenCompany.CompanyType Service</MudText>
+        <MudText><MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" /> Founded in @GenCompany.FoundationDate</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.TravelExplore" Size="Size.Small" /> Serves to @GenCompany.AreaOfService Market</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.Money" Size="Size.Small" /> Worths @GenCompany.Revenue.ToString("C")</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.People" Size="Size.Small" /> Employed @GenCompany.NumberOfEmployees.ToString("N0") employee(s)</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.Web" Size="Size.Small" /> Learn more by visiting <a href="@GenCompany.WebsiteLink">@GenCompany.WebsiteLink</a></MudText>
+        @if(GenCompany.PreviouslyWorkedOrNot == true)
+                    {
+                    <MudText><MudIcon Icon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small" /> Previously collaborated</MudText>
+                    }
+                    else
+                    {
+                    <MudText><MudIcon Icon="@Icons.Filled.Error" Color="Color.Error" Size="Size.Small" /> No prior collaboration</MudText>
+                    }
+         @if(GenCompany.BlacklistedOrNot == false)
+           {
+        <MudText><MudIcon Icon="@Icons.Filled.Check" Color="Color.Success" Size="Size.Small" /> Not in the blacklist</MudText>
+    }
+    else
+    {
+        <MudText><MudIcon Icon="@Icons.Filled.Error" Color="Color.Error" Size="Size.Small" /> In the blacklist</MudText>
+    }
+            </MudCard>
+            <MudButton Class="mt-4 mr-4" OnClick="DeleteCompany" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">DELETE</MudButton>
+            <MudButton Class="mt-4 mr-4" OnClick="Cancel" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Cancel" Color="Color.Default">CANCEL</MudButton>
+    </MudPaper>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    Specific specificCompany = new Specific();
+    General GenCompany = new General();
+
+    protected override async Task OnInitializedAsync()
+    {
+        specificCompany = await Task.Run(() => _specificService.GetSpecificCompanyByIDAsync(Id));
+        GenCompany = await Task.Run(() => _generalService.GetGeneralCompanyByIDAsync(Id));
+    }
+    protected async void DeleteCompany()
+    {
+        if (specificCompany != null)
+        {
+            await _specificService.DeleteSpecificCompanyAsync(specificCompany);
+        }
+        await _generalService.DeleteGeneralCompanyAsync(GenCompany);
+        _navigationManager.NavigateTo("/AllCompanies");
+        Snackbar.Add("Operation successfully completed", Severity.Success);
+    }
+    void Cancel()
+    {
+        _navigationManager.NavigateTo("/ViewCompany/"+GenCompany.Id);
+    }
+}

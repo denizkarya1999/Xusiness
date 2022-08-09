@@ -1,0 +1,50 @@
+﻿@page "/SelectedCompanies"
+@using Project.Omega.Data.ITCompanies
+@using Project.Omega.Services.ITCompanies
+@inject CompaniesSpecificService _specificService
+@inject NavigationManager _navigationManager
+@using Microsoft.AspNetCore.Components.Web.Extensions.Head
+
+<Title Value="Xussiness Pro: Selected Companies" />
+
+<MudPaper Class="pa-8 ma-5 mt-2" Elevation="3">
+    <MudText Class="mb-2"><h1><strong>Selected Companies</strong></h1></MudText>
+    <MudCard Elevation="2" Class="mt-4 pa-4">
+         @if (SpecificCompany == null)
+        {
+            <MudProgressLinear Color="Color.Error" Indeterminate="true" Class="my-7" />
+        }
+        else
+        {
+            <MudTable Items="@SpecificCompany" Hover="true" SortLabel="Sort By" Dense="true" Class="pa-4 mt-3">
+                <HeaderContent>
+                    <MudTh>Company Name</MudTh>
+                    <MudTh>Area of Service</MudTh>
+                    <MudTh>Revenue</MudTh>
+                    <MudTh>Number of Employees</MudTh>
+                    <MudTh>Website</MudTh>
+                    <MudTh>Actions</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Company Name">@context.CompanyName</MudTd>
+                        <MudTd DataLabel="Area of Service">@context.AreaOfService</MudTd>
+                        <MudTd DataLabel="Revenue in U.S. Dollars">@context.Revenue.ToString("C")</MudTd>
+                        <MudTd DataLabel="Number of Employees">@context.NumberOfEmployees.ToString("N0")</MudTd>
+                        <MudTd DataLabel="Website">@context.WebsiteLink</MudTd>
+                        <MudStack Class="py-16 d-flex flex-1" Row="true">
+                         <MudIconButton Href="@($"/ViewSelectedCompany/{context.Id}")" Icon="@Icons.Filled.Preview" Color="Color.Error" />
+                       <MudIconButton Href="@($"/DeleteSelectedCompany/{context.Id}")" Icon="@Icons.Filled.Delete" Color="Color.Error" /> 
+                     </MudStack>   
+                     </RowTemplate>
+                </MudTable>
+        }
+    </MudCard>
+    </MudPaper>
+
+@code {
+    List<Specific> SpecificCompany;
+    protected override async Task OnInitializedAsync()
+    {
+        SpecificCompany = await Task.Run(() => _specificService.GetAllSpecificCompanies());
+    }
+}

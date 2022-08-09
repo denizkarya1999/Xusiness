@@ -1,0 +1,80 @@
+﻿@page "/AllCompanies"
+@using Project.Omega.Data.ITCompanies
+@using Project.Omega.Services.ITCompanies
+@inject CompanyGeneralService _generalService
+@inject NavigationManager _navigationManager
+@using Microsoft.AspNetCore.Components.Web.Extensions.Head
+
+<Title Value="Xussiness Pro: All Companies" />
+
+<MudPaper Class="pa-8 ma-5" Elevation="3">
+    <MudText Class="mb-2"><h1><strong>All Companies</strong></h1></MudText>
+    <MudCard Elevation="2" Class="mt-4 pa-4">
+         <div style="width:600px">
+        <MudFab Color="Color.Error" Icon="@Icons.Material.Filled.Add" OnClick="AddGeneralCompany"/>
+    </div>
+        @if (GenCompany == null)
+        {
+            <MudProgressLinear Color="Color.Error" Indeterminate="true" Class="my-7" />
+        }
+        else{
+             <MudTable Items="@GenCompany" Hover="true" SortLabel="Sort By" Dense="true" Class="pa-4 mt-3">
+            <HeaderContent>
+                <MudTh>Company Name</MudTh>
+                <MudTh>Service Type</MudTh>
+                <MudTh>Date of Foundation</MudTh>
+                <MudTh>Area of Service</MudTh>
+                <MudTh>Revenue</MudTh>
+                <MudTh>Number of Employees</MudTh>
+                <MudTh>Website</MudTh>
+                <MudTh>Is previously worked with?</MudTh>
+                <MudTh>Blacklisted or Not?</MudTh>
+                <MudTh>Actions</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Company Name">@context.CompanyName</MudTd>
+                    <MudTd DataLabel="Service Type">@context.CompanyType</MudTd>
+                    <MudTd DataLabel="Date of Foundation">@context.FoundationDate.Value.Month/@context.FoundationDate.Value.Day/@context.FoundationDate.Value.Year</MudTd>
+                    <MudTd DataLabel="Area of Service">@context.AreaOfService</MudTd>
+                    <MudTd DataLabel="Revenue in U.S. Dollars">@context.Revenue.ToString("C")</MudTd>
+                    <MudTd DataLabel="Number of Employees">@context.NumberOfEmployees.ToString("N0")</MudTd>
+                    <MudTd DataLabel="Website">@context.WebsiteLink</MudTd>
+                     @if(context.PreviouslyWorkedOrNot == true)
+                    {
+                    <MudTd DataLabel="Is previously worked with?">Yes</MudTd>
+                    }
+                    else
+                    {
+                    <MudTd DataLabel="Is previously worked with?">No</MudTd>
+                    }
+                @if(context.BlacklistedOrNot == true)
+                    {
+                    <MudTd DataLabel="Blacklisted or Not?">Blacklisted</MudTd>
+                    }
+                    else
+                    {
+                    <MudTd DataLabel="Blacklisted or Not?">Not Blacklisted</MudTd>
+                    }
+                    <MudStack Class="py-16 d-flex flex-1" Row="true">
+                    <MudIconButton  Href="@($"/ViewCompany/{context.Id}")"  Icon="@Icons.Filled.Preview" Color="Color.Error" />
+                <MudIconButton Href="@($"/EditGeneralCompany/{context.Id}")" Icon="@Icons.Filled.Edit" Color="Color.Error" />
+                <MudIconButton Href="@($"/DeleteGeneralCompany/{context.Id}")" Icon="@Icons.Filled.Delete" Color="Color.Error" />    
+            </MudStack>    
+            </RowTemplate>
+                </MudTable>
+        }
+    </MudCard>
+        </MudPaper>
+
+@code {
+    List<General> GenCompany;
+    protected override async Task OnInitializedAsync()
+    {
+        GenCompany = await Task.Run(() => _generalService.GetAllGeneralCompanies());
+    }
+
+     private void AddGeneralCompany()
+    {
+        _navigationManager.NavigateTo("/AllCompanies/AddGeneralCompany");
+    }
+}

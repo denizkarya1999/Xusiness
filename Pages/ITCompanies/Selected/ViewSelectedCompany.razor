@@ -1,0 +1,27 @@
+﻿@page "/ViewSelectedCompany/{Id:guid}"
+@using Project.Omega.Data.ITCompanies
+@using Project.Omega.Services.ITCompanies
+@inject CompaniesSpecificService _specificService
+@inject NavigationManager _navigationManager
+
+<MudPaper Class="pa-8 ma-5 mt-2" Elevation="3">
+    <MudText Class="mb-2"><h1><strong>@SpecificCompany.CompanyName</strong></h1></MudText>
+    <MudText><MudIcon Icon="@Icons.Material.Filled.CardMembership" Size="Size.Small" /> Registered as  @SpecificCompany.Id</MudText>
+    <MudText><MudIcon Icon="@Icons.Filled.TravelExplore" Size="Size.Small" /> Serves to @SpecificCompany.AreaOfService Market</MudText>
+    <MudText><MudIcon Icon="@Icons.Filled.Money" Size="Size.Small" /> Worths @SpecificCompany.Revenue.ToString("C")</MudText>
+    <MudText><MudIcon Icon="@Icons.Filled.People" Size="Size.Small" /> Employed @SpecificCompany.NumberOfEmployees.ToString("N0") employee(s)</MudText>
+        <MudText><MudIcon Icon="@Icons.Filled.Web" Size="Size.Small" /> Learn more by visiting <a href="@SpecificCompany.WebsiteLink">@SpecificCompany.WebsiteLink</a></MudText>
+     <MudButton Class="mt-4 mr-4" Href="@($"/DeleteSelectedCompany/{SpecificCompany.Id}")" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">DELETE COMPANY</MudButton>
+     <MudButton Class="mt-4 mr-4" Href="/SelectedCompanies" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowCircleRight" Color="Color.Default">BACK TO TABLE</MudButton>
+ </MudPaper>
+
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    Specific SpecificCompany = new Specific();
+    protected override async Task OnInitializedAsync()
+    {
+        SpecificCompany = await Task.Run(() => _specificService.GetSpecificCompanyByIDAsync(Id));
+    }
+}

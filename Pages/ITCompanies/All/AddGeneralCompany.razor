@@ -1,0 +1,64 @@
+﻿@page "/AllCompanies/AddGeneralCompany"
+@using Project.Omega.Data.ITCompanies
+@using Project.Omega.Services.ITCompanies
+@inject CompanyGeneralService _generalService
+@inject NavigationManager _navigationManager
+@inject ISnackbar Snackbar
+
+<MudPaper Class="pa-8 ma-5 mt-2" Elevation="3">
+    <MudText Class="mb-2"><h1><strong>Add Company</strong></h1></MudText>
+    <MudCard Elevation="2" Class="mt-4 pa-4">
+        <MudTextField @bind-Value="@GenCompany.CompanyName" Clearable="true" Label="Company Name" Margin="Margin.Dense"/>
+        <MudSelect T="string" @bind-Value="@GenCompany.CompanyType" Label="Type" AnchorOrigin="Origin.BottomCenter">
+    <MudSelectItem Value="@("Management")" />
+    <MudSelectItem Value="@("Software")" />
+    <MudSelectItem Value="@("Consulting")" />
+    <MudSelectItem Value="@("Business Solutions")" />
+    <MudSelectItem Value="@("Training")" />
+    <MudSelectItem Value="@("Financial")" />
+    <MudSelectItem Value="@("Marketing")" />
+    <MudSelectItem Value="@("Travel")" />
+    <MudSelectItem Value="@("Catering")" />
+    <MudSelectItem Value="@("Distribution and Supply Chain")" />
+    <MudSelectItem Value="@("Design")" />
+    <MudSelectItem Value="@("Construction")" />
+    <MudSelectItem Value="@("Waste Management")" />
+    <MudSelectItem Value="@("Security")" />
+    <MudSelectItem Value="@("Personal")" />
+</MudSelect>
+    <MudDatePicker Label="Date of Foundation" @bind-Date="@GenCompany.FoundationDate" DisableToolbar="true" />
+     <MudSelect T="string" @bind-Value="@GenCompany.AreaOfService" Label="Area of Service" AnchorOrigin="Origin.BottomCenter">
+        <MudSelectItem Value="@("Local")" />
+        <MudSelectItem Value="@("Regional")" />
+        <MudSelectItem Value="@("Global")" />
+     </MudSelect>
+<MudNumericField Class="mt-4" Immediate="false" @bind-Value="@GenCompany.Revenue" Format="N2" Label="Revenue" T="double" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning"></MudNumericField>
+<MudNumericField Class="mt-4" Immediate="false" @bind-Value="@GenCompany.NumberOfEmployees" Label="Number of Employees"></MudNumericField>
+<MudTextField Class="mt-4" Clearable="true" @bind-Value="@GenCompany.WebsiteLink" Label="Website" />
+<div>
+<MudCheckBox Class="mt-4" @bind-Checked="@GenCompany.PreviouslyWorkedOrNot" Label="Previously Collaborated" Color="Color.Dark"></MudCheckBox>
+</div>
+<div>
+    <MudCheckBox Class="mt-4" @bind-Checked="@GenCompany.BlacklistedOrNot" Label="Blacklisted" Color="Color.Dark"></MudCheckBox>
+</div>
+</MudCard>
+<MudButton Class="mt-4 mr-4" OnClick="CreateCompany" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success">ADD COMPANY</MudButton>
+<MudButton Class="mt-4 mr-4" OnClick="Cancel" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Cancel" Color="Color.Default">CANCEL</MudButton>
+    </MudPaper>
+
+@code {
+    General GenCompany = new General()
+    {
+        Id = Guid.NewGuid()
+    };
+    protected async void CreateCompany()
+    {
+        await _generalService.InsertGeneralCompany(GenCompany);
+        _navigationManager.NavigateTo("/AllCompanies");
+        Snackbar.Add("Operation successfully completed", Severity.Success);
+    }
+    void Cancel()
+    {
+        _navigationManager.NavigateTo("/AllCompanies");
+    }
+}
